@@ -20,21 +20,11 @@ void ALU(unsigned A,unsigned B,char ALUControl,unsigned *ALUresult,char *Zero)
 			break;
 		case 2:
 			// if A < B, Z = 1; otherwise, Z = 0
-			if (A<B){
-            	Z=1;  
-            }
-            else{
-                Z=0;
-            }
+			Z=A<B;
 			break;
 		case 3:
 			// if A < B, Z = 1; otherwise, Z = 0 (unsigned)
-			if (A<B){
-                Z=1;
-            }
-            else{
-                Z=0;
-            }
+			Z=A<B;
 			break;
 		case 4:
 			// Z = A AND B
