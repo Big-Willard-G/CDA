@@ -69,7 +69,7 @@ int instruction_fetch(unsigned PC,unsigned *Mem,unsigned *instruction)
 
 	// Check halt condition
 	if (*instruction == 0) return 1;
-	if (*instruction % 4 != 0){
+	if (&instruction % 4 != 0){
 		return 1
 	}
 
