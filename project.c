@@ -201,7 +201,7 @@ int instruction_decode(unsigned op,struct_controls *controls)
 			controls->Branch   = 0;
 			controls->MemRead  = 0;
 			controls->MemtoReg = 2;
-			controls->ALUOp    = 0b111;
+			controls->ALUOp    = 0b000;
 			controls->MemWrite = 0;
 			controls->ALUSrc   = 2;
 			controls->RegWrite = 0;
