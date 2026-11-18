@@ -11,39 +11,39 @@ void ALU(unsigned A,unsigned B,char ALUControl,unsigned *ALUresult,char *Zero)
 	switch (ALUControl)
 	{
 		case 0b000:
-			// Z = A + B
-			Z=A+B;
+			// ADDITION
+			Z = A + B;
 			break;
 		case 0b001:
-			// Z = A - B
-			Z=A-B;
+			// SUBTRACTION
+			Z = A - B;
 			break;
 		case 0b010:
-			// if A < B, Z = 1; otherwise, Z = 0
+			// SET LESS THAN (signed)
 			Z = (int) A < (int) B;
 			break;
 		case 0b011:
-			// if A < B, Z = 1; otherwise, Z = 0 (unsigned)
+			// SET LESS THAN (unsigned)
 			Z=A<B;
 			break;
 		case 0b100:
-			// Z = A AND B
+			// BITWISE AND
 			Z=A&B;
 			break;
 		case 0b101:
-			// Z = A OR B
+			// BITWISE OR
 			Z=A|B;
 			break;
 		case 0b110:
-			// Z = Shift B left by 16 bits
+			// SHIFT LEFT 16BITS
 			Z=B>>16;
 			break;
 		case 0b111:
-			// Z = NOT A
+			// BITWISE NEGATION
 			Z=~A;
 			break;
 		default:
-			// Not a valid ALUControl
+			// INVALID ALUCONTROL ENCOUNTERED
 			break;
 	}
 
@@ -207,7 +207,7 @@ int instruction_decode(unsigned op,struct_controls *controls)
 			controls->RegWrite = 0;
 			break;
 		default:
-			/*** HALT CONDITION MET ***/
+			/*** HALT CONDITION ***/
 			// INVALID INSTRUCTION ENCOUNTERED
 			return 1;
 
