@@ -87,7 +87,7 @@ void instruction_partition(unsigned instruction, unsigned *op, unsigned *r1,unsi
 	*r3 	= (instruction & 0b00000000000000001111100000000000) >> 11;
 	*offset = (instruction & 0b00000000000000000000011111000000) >> 6;
 	*funct	= (instruction & 0b00000000000000000000000000111111);
-	*jsec	= (instruction & 0b00000011111111111111111111111111) >> 6;
+	*jsec	= (instruction & 0b00000011111111111111111111111111);
 }
 
 
