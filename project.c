@@ -48,7 +48,7 @@ void ALU(unsigned A,unsigned B,char ALUControl,unsigned *ALUresult,char *Zero)
 	}
 
 	// Output the result (Z) to ALUResult
-	*ALUResult == Z;
+	*ALUresult == Z;
 
 	// Assign Zero to 1 if the result is zero; otherwise, assign 0
 	if (Z == 0) 
@@ -65,13 +65,17 @@ void ALU(unsigned A,unsigned B,char ALUControl,unsigned *ALUresult,char *Zero)
 /* 10 Points */
 int instruction_fetch(unsigned PC,unsigned *Mem,unsigned *instruction)
 {
-	*instruction = *(Mem + PC);
+	unsigned* adr = Mem + PC;
 
-	// Check halt condition
-	if (*instruction == 0) return 1;
-	if (instruction % 4 != 0) return 1;
+	/*** CHECK HALT CONDITION **/
+	// Outside bounds of memory
 
-	return 0
+	// Instruction not word aligned
+	if ((size_t)adr % 4 != 0) return 1;
+
+	*instruction = *adr;
+
+	return 0;
 }
 
 
@@ -80,12 +84,12 @@ int instruction_fetch(unsigned PC,unsigned *Mem,unsigned *instruction)
 void instruction_partition(unsigned instruction, unsigned *op, unsigned *r1,unsigned *r2, unsigned *r3, unsigned *funct, unsigned *offset, unsigned *jsec)
 {
 	*op	= instruction >> 26;
-	*r1	= (instruction & 00000011111000000000000000000000) >> 21;
-	*r2 	= (instruction & 00000000000111110000000000000000) >> 16;
-	*r3 	= (instruction & 00000000000000001111100000000000) >> 11;
-	*offset = (instruction & 00000000000000000000011111000000) >> 6;
-	*funct	= (instruction & 00000000000000000000000000111111);
-	*jsec	= (instruction & 00000011111111111111111111111111) >> 6;
+	*r1	= (instruction & 0b00000011111000000000000000000000) >> 21;
+	*r2 	= (instruction & 0b00000000000111110000000000000000) >> 16;
+	*r3 	= (instruction & 0b00000000000000001111100000000000) >> 11;
+	*offset = (instruction & 0b00000000000000000000011111000000) >> 6;
+	*funct	= (instruction & 0b00000000000000000000000000111111);
+	*jsec	= (instruction & 0b00000011111111111111111111111111) >> 6;
 }
 
 
@@ -98,111 +102,111 @@ int instruction_decode(unsigned op,struct_controls *controls)
 	{
 		case 0b000000:
 			// R-TYPE
-			controls.RegDst   = 1;
-			controls.Jump     = 0;
-			controls.Branch   = 0;
-			controls.MemRead  = 0;
-			controls.MemtoReg = 0;
-			controls.ALUOp    = 0b111;
-			controls.MemWrite = 0;
-			controls.ALUSrc   = 0;
-			controls.RegWrite = 1;
+			controls->RegDst   = 1;
+			controls->Jump     = 0;
+			controls->Branch   = 0;
+			controls->MemRead  = 0;
+			controls->MemtoReg = 0;
+			controls->ALUOp    = 0b111;
+			controls->MemWrite = 0;
+			controls->ALUSrc   = 0;
+			controls->RegWrite = 1;
 			break;
 		case 0b001000:
 			// ADD IMMEDIATE
-			controls.RegDst   = 0;
-			controls.Jump     = 0;
-			controls.Branch   = 0;
-			controls.MemRead  = 0;
-			controls.MemtoReg = 0;
-			controls.ALUOp    = 0b000;
-			controls.MemWrite = 0;
-			controls.ALUSrc   = 1;
-			controls.RegWrite = 1;
+			controls->RegDst   = 0;
+			controls->Jump     = 0;
+			controls->Branch   = 0;
+			controls->MemRead  = 0;
+			controls->MemtoReg = 0;
+			controls->ALUOp    = 0b000;
+			controls->MemWrite = 0;
+			controls->ALUSrc   = 1;
+			controls->RegWrite = 1;
 			break;
 		case 0b100011:
 			// LOAD WORD
-			controls.RegDst   = 0;
-			controls.Jump     = 0;
-			controls.Branch   = 0;
-			controls.MemRead  = 1;
-			controls.MemtoReg = 1;
-			controls.ALUOp    = 0b000;
-			controls.MemWrite = 0;
-			controls.ALUSrc   = 1;
-			controls.RegWrite = 1;
+			controls->RegDst   = 0;
+			controls->Jump     = 0;
+			controls->Branch   = 0;
+			controls->MemRead  = 1;
+			controls->MemtoReg = 1;
+			controls->ALUOp    = 0b000;
+			controls->MemWrite = 0;
+			controls->ALUSrc   = 1;
+			controls->RegWrite = 1;
 			break;
 		case 0b101011:
 			// STORE WORD
-			controls.RegDst   = 2;
-			controls.Jump     = 0;
-			controls.Branch   = 0;
-			controls.MemRead  = 0;
-			controls.MemtoReg = 2;
-			controls.ALUOp    = 0b000;
-			controls.MemWrite = 1;
-			controls.ALUSrc   = 1;
-			controls.RegWrite = 0;
+			controls->RegDst   = 2;
+			controls->Jump     = 0;
+			controls->Branch   = 0;
+			controls->MemRead  = 0;
+			controls->MemtoReg = 2;
+			controls->ALUOp    = 0b000;
+			controls->MemWrite = 1;
+			controls->ALUSrc   = 1;
+			controls->RegWrite = 0;
 			break;
 		case 0b001111:
 			// LOAD UPPER IMMEDIATE
-			controls.RegDst   = 0;
-			controls.Jump     = 0;
-			controls.Branch   = 0;
-			controls.MemRead  = 0;
-			controls.MemtoReg = 0;
-			controls.ALUOp    = 0b110; // shift left 16bits
-			controls.MemWrite = 0;
-			controls.ALUSrc   = 1;
-			controls.RegWrite = 1;
+			controls->RegDst   = 0;
+			controls->Jump     = 0;
+			controls->Branch   = 0;
+			controls->MemRead  = 0;
+			controls->MemtoReg = 0;
+			controls->ALUOp    = 0b110; // shift left 16bits
+			controls->MemWrite = 0;
+			controls->ALUSrc   = 1;
+			controls->RegWrite = 1;
 			break;
 		case 0b000100:
 			// BRANCH ON EQUAL
-			controls.RegDst   = 2;
-			controls.Jump     = 0;
-			controls.Branch   = 1;
-			controls.MemRead  = 0;
-			controls.MemtoReg = 2;
-			controls.ALUOp    = 0b001;
-			controls.MemWrite = 0;
-			controls.ALUSrc   = 0;
-			controls.RegWrite = 0;
+			controls->RegDst   = 2;
+			controls->Jump     = 0;
+			controls->Branch   = 1;
+			controls->MemRead  = 0;
+			controls->MemtoReg = 2;
+			controls->ALUOp    = 0b001;
+			controls->MemWrite = 0;
+			controls->ALUSrc   = 0;
+			controls->RegWrite = 0;
 			break;
 		case 0b001010:
 			// SET LESS THAN IMMEDIATE
-			controls.RegDst   = 0;
-			controls.Jump     = 0;
-			controls.Branch   = 0;
-			controls.MemRead  = 0;
-			controls.MemtoReg = 0;
-			controls.ALUOp    = 0b010;
-			controls.MemWrite = 0;
-			controls.ALUSrc   = 1;
-			controls.RegWrite = 1;
+			controls->RegDst   = 0;
+			controls->Jump     = 0;
+			controls->Branch   = 0;
+			controls->MemRead  = 0;
+			controls->MemtoReg = 0;
+			controls->ALUOp    = 0b010;
+			controls->MemWrite = 0;
+			controls->ALUSrc   = 1;
+			controls->RegWrite = 1;
 			break;
 		case 0x001011:
 			// SET LESS THAN IMMEDIATE UNSIGNED
-			controls.RegDst   = 0;
-			controls.Jump     = 0;
-			controls.Branch   = 0;
-			controls.MemRead  = 0;
-			controls.MemtoReg = 0;
-			controls.ALUOp    = 0b011;
-			controls.MemWrite = 0;
-			controls.ALUSrc   = 1;
-			controls.RegWrite = 1;
+			controls->RegDst   = 0;
+			controls->Jump     = 0;
+			controls->Branch   = 0;
+			controls->MemRead  = 0;
+			controls->MemtoReg = 0;
+			controls->ALUOp    = 0b011;
+			controls->MemWrite = 0;
+			controls->ALUSrc   = 1;
+			controls->RegWrite = 1;
 			break;
 		case 0b000010:
 			// JUMP
-			controls.RegDst   = 2;
-			controls.Jump     = 1;
-			controls.Branch   = 0;
-			controls.MemRead  = 0
-			controls.MemtoReg = 2;
-			controls.ALUOp    = 0b111;
-			controls.MemWrite = 0
-			controls.ALUSrc   = 2;
-			controls.RegWrite = 0
+			controls->RegDst   = 2;
+			controls->Jump     = 1;
+			controls->Branch   = 0;
+			controls->MemRead  = 0;
+			controls->MemtoReg = 2;
+			controls->ALUOp    = 0b111;
+			controls->MemWrite = 0;
+			controls->ALUSrc   = 2;
+			controls->RegWrite = 0;
 			break;
 		default:
 			// NOT A VALID OP CODE
@@ -218,7 +222,7 @@ int instruction_decode(unsigned op,struct_controls *controls)
 void read_register(unsigned r1,unsigned r2,unsigned *Reg,unsigned *data1,unsigned *data2)
 {
 	*data1 = Reg[r1];
-	*data2 = Red[r2];
+	*data2 = Reg[r2];
 }
 
 
