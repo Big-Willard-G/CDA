@@ -229,7 +229,7 @@ void read_register(unsigned r1,unsigned r2,unsigned *Reg,unsigned *data1,unsigne
 /* 10 Points */
 void sign_extend(unsigned offset,unsigned *extended_value)
 {
-*extended_value= (offset & 0b00000000000000001111111111111111);
+	*extended_value= (int16_t)(offset & 0b00000000000000001111111111111111);
 }
 
 /* ALU operations */
