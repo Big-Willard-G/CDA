@@ -69,6 +69,7 @@ int instruction_fetch(unsigned PC,unsigned *Mem,unsigned *instruction)
 
 	/*** CHECK HALT CONDITION **/
 	// Outside bounds of memory
+	if ((size_t)adr > 0xFFFF) return 1;
 
 	// Instruction not word aligned
 	if ((size_t)adr % 4 != 0) return 1;
