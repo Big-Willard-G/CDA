@@ -67,12 +67,9 @@ int instruction_fetch(unsigned PC,unsigned *Mem,unsigned *instruction)
 {
 	unsigned* adr = Mem + PC;
 
-	/*** CHECK HALT CONDITION **/
-	// Outside bounds of memory
-	if ((size_t)adr > 0xFFFF) return 1;
-
-	// Instruction not word aligned
-	if ((size_t)adr % 4 != 0) return 1;
+	/*** CHECK HALT CONDITIONS **/
+	if ((size_t)adr > 0xFFFF) return 1;	// Outside bounds of memory
+	if ((size_t)adr % 4 != 0) return 1;	// Instruction not word aligned
 
 	*instruction = *adr;
 
@@ -156,7 +153,7 @@ int instruction_decode(unsigned op,struct_controls *controls)
 			controls->Branch   = 0;
 			controls->MemRead  = 0;
 			controls->MemtoReg = 0;
-			controls->ALUOp    = 0b110; // shift left 16bits
+			controls->ALUOp    = 0b110; // SHIFT LEFT 16BITS
 			controls->MemWrite = 0;
 			controls->ALUSrc   = 1;
 			controls->RegWrite = 1;
@@ -210,8 +207,8 @@ int instruction_decode(unsigned op,struct_controls *controls)
 			controls->RegWrite = 0;
 			break;
 		default:
-			// NOT A VALID OP CODE
-			// RETURN WITH AN ERROR (HALT)
+			/*** HALT CONDITION MET ***/
+			// INVALID INSTRUCTION ENCOUNTERED
 			return 1;
 
 		return 0;
