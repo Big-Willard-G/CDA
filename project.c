@@ -24,23 +24,23 @@ void ALU(unsigned A,unsigned B,char ALUControl,unsigned *ALUresult,char *Zero)
 			break;
 		case 0b011:
 			// SET LESS THAN (unsigned)
-			Z=A<B;
+			Z = A < B;
 			break;
 		case 0b100:
 			// BITWISE AND
-			Z=A&B;
+			Z = A & B;
 			break;
 		case 0b101:
 			// BITWISE OR
-			Z=A|B;
+			Z = A | B;
 			break;
 		case 0b110:
 			// SHIFT LEFT 16BITS
-			Z=B>>16;
+			Z = B >> 16;
 			break;
 		case 0b111:
 			// BITWISE NEGATION
-			Z=~A;
+			Z = ~A;
 			break;
 		default:
 			// INVALID ALUCONTROL ENCOUNTERED
@@ -210,9 +210,10 @@ int instruction_decode(unsigned op,struct_controls *controls)
 			/*** HALT CONDITION ***/
 			// INVALID INSTRUCTION ENCOUNTERED
 			return 1;
+			break;
 
-		return 0;
 	}
+	return 0;
 }
 
 /* Read Register */
