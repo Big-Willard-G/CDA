@@ -105,7 +105,7 @@ int instruction_decode(unsigned op,struct_controls *controls)
 			controls->Branch   = 0;
 			controls->MemRead  = 0;
 			controls->MemtoReg = 0;
-			controls->ALUOp    = 0b111;
+			controls->ALUOp    = 0b111; // DETERMINED BY FUNCT
 			controls->MemWrite = 0;
 			controls->ALUSrc   = 0;
 			controls->RegWrite = 1;
@@ -117,7 +117,7 @@ int instruction_decode(unsigned op,struct_controls *controls)
 			controls->Branch   = 0;
 			controls->MemRead  = 0;
 			controls->MemtoReg = 0;
-			controls->ALUOp    = 0b000;
+			controls->ALUOp    = 0b000; // ADDITION
 			controls->MemWrite = 0;
 			controls->ALUSrc   = 1;
 			controls->RegWrite = 1;
@@ -129,7 +129,7 @@ int instruction_decode(unsigned op,struct_controls *controls)
 			controls->Branch   = 0;
 			controls->MemRead  = 1;
 			controls->MemtoReg = 1;
-			controls->ALUOp    = 0b000;
+			controls->ALUOp    = 0b000; // ADDITION
 			controls->MemWrite = 0;
 			controls->ALUSrc   = 1;
 			controls->RegWrite = 1;
@@ -141,7 +141,7 @@ int instruction_decode(unsigned op,struct_controls *controls)
 			controls->Branch   = 0;
 			controls->MemRead  = 0;
 			controls->MemtoReg = 2;
-			controls->ALUOp    = 0b000;
+			controls->ALUOp    = 0b000; // ADDITION
 			controls->MemWrite = 1;
 			controls->ALUSrc   = 1;
 			controls->RegWrite = 0;
@@ -165,7 +165,7 @@ int instruction_decode(unsigned op,struct_controls *controls)
 			controls->Branch   = 1;
 			controls->MemRead  = 0;
 			controls->MemtoReg = 2;
-			controls->ALUOp    = 0b001;
+			controls->ALUOp    = 0b001; // SUBTRACTION
 			controls->MemWrite = 0;
 			controls->ALUSrc   = 0;
 			controls->RegWrite = 0;
@@ -177,7 +177,7 @@ int instruction_decode(unsigned op,struct_controls *controls)
 			controls->Branch   = 0;
 			controls->MemRead  = 0;
 			controls->MemtoReg = 0;
-			controls->ALUOp    = 0b010;
+			controls->ALUOp    = 0b010; // SET LESS THAN (signed)
 			controls->MemWrite = 0;
 			controls->ALUSrc   = 1;
 			controls->RegWrite = 1;
@@ -189,7 +189,7 @@ int instruction_decode(unsigned op,struct_controls *controls)
 			controls->Branch   = 0;
 			controls->MemRead  = 0;
 			controls->MemtoReg = 0;
-			controls->ALUOp    = 0b011;
+			controls->ALUOp    = 0b011; // SET LESS THAN (unsigned)
 			controls->MemWrite = 0;
 			controls->ALUSrc   = 1;
 			controls->RegWrite = 1;
@@ -201,7 +201,7 @@ int instruction_decode(unsigned op,struct_controls *controls)
 			controls->Branch   = 0;
 			controls->MemRead  = 0;
 			controls->MemtoReg = 2;
-			controls->ALUOp    = 0b000;
+			controls->ALUOp    = 0b000; // DON'T CARE
 			controls->MemWrite = 0;
 			controls->ALUSrc   = 2;
 			controls->RegWrite = 0;
