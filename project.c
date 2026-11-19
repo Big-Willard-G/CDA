@@ -98,7 +98,7 @@ int instruction_decode(unsigned op,struct_controls *controls)
 {
 	switch (op)
 	{
-		case 0b000000:
+		case 0x00;
 			// R-TYPE
 			controls->RegDst   = 1;
 			controls->Jump     = 0;
@@ -110,7 +110,7 @@ int instruction_decode(unsigned op,struct_controls *controls)
 			controls->ALUSrc   = 0;
 			controls->RegWrite = 1;
 			break;
-		case 0b001000:
+		case 0x08;
 			// ADD IMMEDIATE
 			controls->RegDst   = 0;
 			controls->Jump     = 0;
@@ -122,7 +122,7 @@ int instruction_decode(unsigned op,struct_controls *controls)
 			controls->ALUSrc   = 1;
 			controls->RegWrite = 1;
 			break;
-		case 0b100011:
+		case 0x23;
 			// LOAD WORD
 			controls->RegDst   = 0;
 			controls->Jump     = 0;
@@ -134,7 +134,7 @@ int instruction_decode(unsigned op,struct_controls *controls)
 			controls->ALUSrc   = 1;
 			controls->RegWrite = 1;
 			break;
-		case 0b101011:
+		case 0x2B;
 			// STORE WORD
 			controls->RegDst   = 2;
 			controls->Jump     = 0;
@@ -146,7 +146,7 @@ int instruction_decode(unsigned op,struct_controls *controls)
 			controls->ALUSrc   = 1;
 			controls->RegWrite = 0;
 			break;
-		case 0b001111:
+		case 0x0F;
 			// LOAD UPPER IMMEDIATE
 			controls->RegDst   = 0;
 			controls->Jump     = 0;
@@ -158,7 +158,7 @@ int instruction_decode(unsigned op,struct_controls *controls)
 			controls->ALUSrc   = 1;
 			controls->RegWrite = 1;
 			break;
-		case 0b000100:
+		case 0x04;
 			// BRANCH ON EQUAL
 			controls->RegDst   = 2;
 			controls->Jump     = 0;
@@ -170,7 +170,7 @@ int instruction_decode(unsigned op,struct_controls *controls)
 			controls->ALUSrc   = 0;
 			controls->RegWrite = 0;
 			break;
-		case 0b001010:
+		case 0x0A;
 			// SET LESS THAN IMMEDIATE
 			controls->RegDst   = 0;
 			controls->Jump     = 0;
@@ -182,7 +182,7 @@ int instruction_decode(unsigned op,struct_controls *controls)
 			controls->ALUSrc   = 1;
 			controls->RegWrite = 1;
 			break;
-		case 0b001011:
+		case 0x0B;
 			// SET LESS THAN IMMEDIATE UNSIGNED
 			controls->RegDst   = 0;
 			controls->Jump     = 0;
@@ -194,7 +194,7 @@ int instruction_decode(unsigned op,struct_controls *controls)
 			controls->ALUSrc   = 1;
 			controls->RegWrite = 1;
 			break;
-		case 0b000010:
+		case 0x02;
 			// JUMP
 			controls->RegDst   = 2;
 			controls->Jump     = 1;
@@ -229,7 +229,7 @@ void read_register(unsigned r1,unsigned r2,unsigned *Reg,unsigned *data1,unsigne
 /* 10 Points */
 void sign_extend(unsigned offset,unsigned *extended_value)
 {
-	*extended_value= (int16_t)(offset & 0b00000000000000001111111111111111);
+	*extended_value= (int16_t)(offset & 0x0000FFFF;
 }
 
 /* ALU operations */
@@ -264,7 +264,7 @@ void PC_update(unsigned jsec,unsigned extended_value,char Branch,char Jump,char 
 	// JUMP
 	if (Jump)
 	{
-		*PC &= 0b11110000000000000000000000000000;
+		*PC &= 0xF0000000;
 		*PC |= jsec << 2;
 	}
 
