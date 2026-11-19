@@ -243,21 +243,21 @@ int ALU_operations(unsigned data1,unsigned data2,unsigned extended_value,unsigne
 /* 10 Points */
 int rw_memory(unsigned ALUresult,unsigned data2,char MemWrite,char MemRead,unsigned *memdata,unsigned *Mem)
 {
-//halt conditions
-if ((size_t)Mem % 4 !=0){
-	return 1;
-}
-if (MemRead==1){
-	data2=*memdata;
-	return 0;
-}
-if (Memwrite==1){
-	*Mem=ALUresult;
-	return 0;
-}
-else {
-	return 0;
-}
+	//halt conditions
+	if ((size_t)Mem % 4 !=0){
+		return 1;
+	}
+	if (MemRead==1){
+		data2=*memdata;
+		return 0;
+	}
+	if (Memwrite==1){
+		*Mem=ALUresult;
+		return 0;
+	}
+	else {
+		return 0;
+	}
 }
 
 
