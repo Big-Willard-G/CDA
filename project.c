@@ -182,7 +182,7 @@ int instruction_decode(unsigned op,struct_controls *controls)
 			controls->ALUSrc   = 1;
 			controls->RegWrite = 1;
 			break;
-		case 0x001011:
+		case 0b001011:
 			// SET LESS THAN IMMEDIATE UNSIGNED
 			controls->RegDst   = 0;
 			controls->Jump     = 0;
