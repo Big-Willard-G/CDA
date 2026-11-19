@@ -243,6 +243,8 @@ int ALU_operations(unsigned data1,unsigned data2,unsigned extended_value,unsigne
 /* 10 Points */
 int rw_memory(unsigned ALUresult,unsigned data2,char MemWrite,char MemRead,unsigned *memdata,unsigned *Mem)
 {
+	unsigned* adr = Mem + ALUresult;
+
 	/*** CHECK HALT CONDITION **/
 	if ((size_t)adr % 4 != 0) return 1;
 
