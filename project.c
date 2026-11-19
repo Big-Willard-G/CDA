@@ -243,6 +243,7 @@ int ALU_operations(unsigned data1,unsigned data2,unsigned extended_value,unsigne
 /* 10 Points */
 int rw_memory(unsigned ALUresult,unsigned data2,char MemWrite,char MemRead,unsigned *memdata,unsigned *Mem)
 {
+<<<<<<< HEAD
 	//halt conditions
 	if ((size_t)Mem % 4 !=0){
 		return 1;
@@ -258,6 +259,27 @@ int rw_memory(unsigned ALUresult,unsigned data2,char MemWrite,char MemRead,unsig
 	else {
 		return 0;
 	}
+=======
+	unsigned* adr = Mem + ALUresult;
+
+	/*** CHECK HALT CONDITION **/
+	if ((size_t)adr % 4 != 0) return 1;
+
+	// Determine if this is a memory read operation, write operation, or neither
+	if (MemRead==1)
+	{
+		// Read from memory
+		*memdata = *adr;
+	}
+
+	if (MemWrite==1)
+	{
+		// Write to memory
+		*adr = data2;
+	}
+
+	return 0;
+>>>>>>> 56ffd92 (Fixed rw_memory logic)
 }
 
 
