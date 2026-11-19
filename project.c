@@ -98,7 +98,7 @@ int instruction_decode(unsigned op,struct_controls *controls)
 {
 	switch (op)
 	{
-		case 0x00;
+		case 0x00:
 			// R-TYPE
 			controls->RegDst   = 1;
 			controls->Jump     = 0;
@@ -110,7 +110,7 @@ int instruction_decode(unsigned op,struct_controls *controls)
 			controls->ALUSrc   = 0;
 			controls->RegWrite = 1;
 			break;
-		case 0x08;
+		case 0x08:
 			// ADD IMMEDIATE
 			controls->RegDst   = 0;
 			controls->Jump     = 0;
@@ -122,7 +122,7 @@ int instruction_decode(unsigned op,struct_controls *controls)
 			controls->ALUSrc   = 1;
 			controls->RegWrite = 1;
 			break;
-		case 0x23;
+		case 0x23:
 			// LOAD WORD
 			controls->RegDst   = 0;
 			controls->Jump     = 0;
@@ -134,7 +134,7 @@ int instruction_decode(unsigned op,struct_controls *controls)
 			controls->ALUSrc   = 1;
 			controls->RegWrite = 1;
 			break;
-		case 0x2B;
+		case 0x2B:
 			// STORE WORD
 			controls->RegDst   = 2;
 			controls->Jump     = 0;
@@ -146,7 +146,7 @@ int instruction_decode(unsigned op,struct_controls *controls)
 			controls->ALUSrc   = 1;
 			controls->RegWrite = 0;
 			break;
-		case 0x0F;
+		case 0x0F:
 			// LOAD UPPER IMMEDIATE
 			controls->RegDst   = 0;
 			controls->Jump     = 0;
@@ -158,7 +158,7 @@ int instruction_decode(unsigned op,struct_controls *controls)
 			controls->ALUSrc   = 1;
 			controls->RegWrite = 1;
 			break;
-		case 0x04;
+		case 0x04:
 			// BRANCH ON EQUAL
 			controls->RegDst   = 2;
 			controls->Jump     = 0;
@@ -170,7 +170,7 @@ int instruction_decode(unsigned op,struct_controls *controls)
 			controls->ALUSrc   = 0;
 			controls->RegWrite = 0;
 			break;
-		case 0x0A;
+		case 0x0A:
 			// SET LESS THAN IMMEDIATE
 			controls->RegDst   = 0;
 			controls->Jump     = 0;
@@ -182,7 +182,7 @@ int instruction_decode(unsigned op,struct_controls *controls)
 			controls->ALUSrc   = 1;
 			controls->RegWrite = 1;
 			break;
-		case 0x0B;
+		case 0x0B:
 			// SET LESS THAN IMMEDIATE UNSIGNED
 			controls->RegDst   = 0;
 			controls->Jump     = 0;
@@ -194,7 +194,7 @@ int instruction_decode(unsigned op,struct_controls *controls)
 			controls->ALUSrc   = 1;
 			controls->RegWrite = 1;
 			break;
-		case 0x02;
+		case 0x02:
 			// JUMP
 			controls->RegDst   = 2;
 			controls->Jump     = 1;
@@ -229,7 +229,7 @@ void read_register(unsigned r1,unsigned r2,unsigned *Reg,unsigned *data1,unsigne
 /* 10 Points */
 void sign_extend(unsigned offset,unsigned *extended_value)
 {
-	*extended_value= (int16_t)(offset & 0x0000FFFF;
+	*extended_value= (int16_t)(offset & 0x0000FFFF);
 }
 
 /* ALU operations */
@@ -251,23 +251,29 @@ int rw_memory(unsigned ALUresult,unsigned data2,char MemWrite,char MemRead,unsig
 /* 10 Points */
 void write_register(unsigned r2,unsigned r3,unsigned memdata,unsigned ALUresult,char RegWrite,char RegDst,char MemtoReg,unsigned *Reg)
 {
-if (RegWrite==1 && RegDst==0){
-	if (MemtoReg==1){
-		*Reg[r2]=memdata;
+	if (RegWrite==1 && RegDst==0)
+	{
+		if (MemtoReg==1)
+		{
+			Reg[r2]=memdata;
+		}
+		else 
+		{
+			Reg[r2]=ALUresult;
+		}
 	}
-	else {
-		*Reg[r2]=ALUresult;
+	if (RegWrite==1 && RegDst==1)
+	{
+		if (MemtoReg==1)
+		{
+			Reg[r3]=memdata;
+		}
+		else
+		{
+			Reg[r3]=ALUresult;
+		}
 	}
-}
-if (RegWrite==1 && RegDst==1){
-	if (MemtoReg==1){
-		*Reg[r3]=memdata;
-	}
-	else{
-		*Reg[r3]=ALUresult;
-	}
-}
-return 0;
+	return;
 }
 
 /* PC update */
