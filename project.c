@@ -249,13 +249,13 @@ int rw_memory(unsigned ALUresult,unsigned data2,char MemWrite,char MemRead,unsig
 	if ((size_t)adr % 4 != 0) return 1;
 
 	// Determine if this is a memory read operation, write operation, or neither
-	if (MemRead==1)
+	if (MemRead)
 	{
 		// Read from memory
 		*memdata = *adr;
 	}
 
-	if (MemWrite==1)
+	if (MemWrite)
 	{
 		// Write to memory
 		*adr = data2;
@@ -269,9 +269,11 @@ int rw_memory(unsigned ALUresult,unsigned data2,char MemWrite,char MemRead,unsig
 /* 10 Points */
 void write_register(unsigned r2,unsigned r3,unsigned memdata,unsigned ALUresult,char RegWrite,char RegDst,char MemtoReg,unsigned *Reg)
 {
-	if (RegWrite==1 && RegDst==0)
+	if (!RegWrite) return;
+
+	if (!RegDst)
 	{
-		if (MemtoReg==1)
+		if (MemtoReg)
 		{
 			Reg[r2]=memdata;
 		}
@@ -280,9 +282,9 @@ void write_register(unsigned r2,unsigned r3,unsigned memdata,unsigned ALUresult,
 			Reg[r2]=ALUresult;
 		}
 	}
-	if (RegWrite==1 && RegDst==1)
+	else
 	{
-		if (MemtoReg==1)
+		if (MemtoReg)
 		{
 			Reg[r3]=memdata;
 		}
