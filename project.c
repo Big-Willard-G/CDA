@@ -247,7 +247,7 @@ int rw_memory(unsigned ALUresult,unsigned data2,char MemWrite,char MemRead,unsig
 
 	/*** CHECK HALT CONDITIONS **/
 	if ((size_t)adr > 0xFFFF) return 1;	// Outside bounds of memory
-	if ((size_t)adr % 4 != 0) return 1;	// Instruction not word aligned
+	if ((size_t)adr % 4 != 0) return 1;	// Address not word aligned
 
 	// Determine if this is a memory read operation, write operation, or neither
 	if (MemRead)
