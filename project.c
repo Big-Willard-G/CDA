@@ -236,7 +236,52 @@ void sign_extend(unsigned offset,unsigned *extended_value)
 /* 10 Points */
 int ALU_operations(unsigned data1,unsigned data2,unsigned extended_value,unsigned funct,char ALUOp,char ALUSrc,unsigned *ALUresult,char *Zero)
 {
+	// Check ALUsrc
+	data2 = ALUSrc ? extended_value : data2;
 
+	// Assign ALUControl based on values of ALUOp and funct
+	char ALUControl;
+	if (ALUOp == 0b111)
+	{
+		// ALUControl is determined by funct
+		switch (funct)
+		{
+			case 0x20:
+				// add
+				ALUControl = 0b000;
+				break;
+			case 0x22:
+				// sub
+				ALUControl = 0b001;
+				break;
+			case 0x24:
+				// and
+				ALUControl = 0b100;
+				break;
+			case 0x25:
+				// or
+				ALUControl = 0b101;
+				break;
+			case 0x2A:
+				// stl
+				ALUControl = 0b010;
+				break;
+			case 0x2B:
+				// stlu
+				ALUControl = 0b011;
+				break;
+			default:
+				/*** HALT CONDITION ***/
+				// INVALID FUNCT ENCOUNTERED
+				return 1;
+		}
+	}
+	else ALUControl = ALUOp;
+
+	// Call ALU
+	ALU(data1, data2, ALUControl, ALUresult, Zero);
+	
+	return 0;
 }
 
 /* Read / Write Memory */
