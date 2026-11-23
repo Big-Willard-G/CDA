@@ -1,6 +1,5 @@
 #include "spimcore.h"
 
-
 /* ALU */
 /* 10 Points */
 void ALU(unsigned A,unsigned B,char ALUControl,unsigned *ALUresult,char *Zero)
@@ -48,7 +47,7 @@ void ALU(unsigned A,unsigned B,char ALUControl,unsigned *ALUresult,char *Zero)
 	}
 
 	// Output the result (Z) to ALUResult
-	*ALUresult == Z;
+	*ALUresult = Z;
 
 	// Assign Zero to 1 if the result is zero; otherwise, assign 0
 	if (Z == 0) 
@@ -65,13 +64,14 @@ void ALU(unsigned A,unsigned B,char ALUControl,unsigned *ALUresult,char *Zero)
 /* 10 Points */
 int instruction_fetch(unsigned PC,unsigned *Mem,unsigned *instruction)
 {
-	unsigned* adr = Mem + PC;
+	unsigned* adr = Mem + (PC >> 2);
 
 	/*** CHECK HALT CONDITIONS **/
-	if ((size_t)adr > 0xFFFF) return 1;	// Outside bounds of memory
+	if (PC > 0xFFFF) return 1;		// Outside bounds of memory
 	if ((size_t)adr % 4 != 0) return 1;	// Instruction not word aligned
 
 	*instruction = *adr;
+
 
 	return 0;
 }
@@ -85,7 +85,7 @@ void instruction_partition(unsigned instruction, unsigned *op, unsigned *r1,unsi
 	*r1	= (instruction & 0b00000011111000000000000000000000) >> 21;
 	*r2 	= (instruction & 0b00000000000111110000000000000000) >> 16;
 	*r3 	= (instruction & 0b00000000000000001111100000000000) >> 11;
-	*offset = (instruction & 0b00000000000000000000011111000000) >> 6;
+	*offset = (instruction & 0b00000000000000001111111111111111);
 	*funct	= (instruction & 0b00000000000000000000000000111111);
 	*jsec	= (instruction & 0b00000011111111111111111111111111);
 }
@@ -288,10 +288,10 @@ int ALU_operations(unsigned data1,unsigned data2,unsigned extended_value,unsigne
 /* 10 Points */
 int rw_memory(unsigned ALUresult,unsigned data2,char MemWrite,char MemRead,unsigned *memdata,unsigned *Mem)
 {
-	unsigned* adr = Mem + ALUresult;
+	unsigned* adr = Mem + (ALUresult >> 2);
 
 	/*** CHECK HALT CONDITIONS **/
-	if ((size_t)adr > 0xFFFF) return 1;	// Outside bounds of memory
+	if (ALUresult > 0xFFFF) return 1;	// Outside bounds of memory
 	if ((size_t)adr % 4 != 0) return 1;	// Address not word aligned
 
 	// Determine if this is a memory read operation, write operation, or neither
