@@ -35,7 +35,7 @@ void ALU(unsigned A,unsigned B,char ALUControl,unsigned *ALUresult,char *Zero)
 			break;
 		case 0b110:
 			// SHIFT LEFT 16BITS
-			Z = B >> 16;
+			Z = (B << 16);
 			break;
 		case 0b111:
 			// BITWISE NEGATION
@@ -288,6 +288,8 @@ int ALU_operations(unsigned data1,unsigned data2,unsigned extended_value,unsigne
 /* 10 Points */
 int rw_memory(unsigned ALUresult,unsigned data2,char MemWrite,char MemRead,unsigned *memdata,unsigned *Mem)
 {
+	if (!MemRead && !MemWrite) return 0;
+
 	unsigned* adr = Mem + (ALUresult >> 2);
 
 	/*** CHECK HALT CONDITIONS **/
