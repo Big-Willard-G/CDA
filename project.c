@@ -64,13 +64,11 @@ void ALU(unsigned A,unsigned B,char ALUControl,unsigned *ALUresult,char *Zero)
 /* 10 Points */
 int instruction_fetch(unsigned PC,unsigned *Mem,unsigned *instruction)
 {
-	unsigned* adr = Mem + (PC >> 2);
-
 	/*** CHECK HALT CONDITIONS **/
-	if (PC > 0xFFFF) return 1;		// Outside bounds of memory
-	if ((size_t)adr % 4 != 0) return 1;	// Instruction not word aligned
+	if (PC > 0xFFFF) return 1;	// Outside bounds of memory
+	if (PC % 4 != 0) return 1;	// Instruction not word aligned
 
-	*instruction = *adr;
+	*instruction = MEM(PC);
 
 
 	return 0;
@@ -290,23 +288,21 @@ int rw_memory(unsigned ALUresult,unsigned data2,char MemWrite,char MemRead,unsig
 {
 	if (!MemRead && !MemWrite) return 0;
 
-	unsigned* adr = Mem + (ALUresult >> 2);
-
 	/*** CHECK HALT CONDITIONS **/
 	if (ALUresult > 0xFFFF) return 1;	// Outside bounds of memory
-	if ((size_t)adr % 4 != 0) return 1;	// Address not word aligned
+	if (ALUresult % 4 != 0) return 1;	// Address not word aligned
 
 	// Determine if this is a memory read operation, write operation, or neither
 	if (MemRead)
 	{
 		// Read from memory
-		*memdata = *adr;
+		*memdata = MEM(ALUresult);
 	}
 
 	if (MemWrite)
 	{
 		// Write to memory
-		*adr = data2;
+		MEM(ALUresult) = data2;
 	}
 
 	return 0;
