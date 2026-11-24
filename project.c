@@ -50,14 +50,7 @@ void ALU(unsigned A,unsigned B,char ALUControl,unsigned *ALUresult,char *Zero)
 	*ALUresult = Z;
 
 	// Assign Zero to 1 if the result is zero; otherwise, assign 0
-	if (Z == 0) 
-	{
-		*Zero = 1;
-	}
-	else
-	{
-		*Zero = 0;
-	}
+	*Zero = !Z;
 }
 
 /* instruction fetch */
@@ -69,7 +62,6 @@ int instruction_fetch(unsigned PC,unsigned *Mem,unsigned *instruction)
 	if (PC % 4 != 0) return 1;	// Instruction not word aligned
 
 	*instruction = MEM(PC);
-
 
 	return 0;
 }
