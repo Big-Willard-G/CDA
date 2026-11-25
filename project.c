@@ -309,25 +309,11 @@ void write_register(unsigned r2,unsigned r3,unsigned memdata,unsigned ALUresult,
 
 	if (!RegDst)
 	{
-		if (MemtoReg)
-		{
-			Reg[r2]=memdata;
-		}
-		else 
-		{
-			Reg[r2]=ALUresult;
-		}
+		Reg[r2] = MemtoReg ? memdata : ALUresult;
 	}
 	else
 	{
-		if (MemtoReg)
-		{
-			Reg[r3]=memdata;
-		}
-		else
-		{
-			Reg[r3]=ALUresult;
-		}
+		Reg[r3] = MemtoReg ? memdata : ALUresult;
 	}
 	return;
 }
